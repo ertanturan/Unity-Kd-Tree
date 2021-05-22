@@ -18,7 +18,7 @@ public class UserInterfaceManager : MonoBehaviour
     #region Properties and Fields
 
     [SerializeField] private InputField _bulkField;
-
+    [SerializeField] private Text _cubeCounter;
     private int _bulkAmount=0;
     
     #endregion
@@ -51,5 +51,11 @@ public class UserInterfaceManager : MonoBehaviour
         _bulkAmount = value;
     }
 
+
+    public void SetCubeCounter(int amount)
+    {
+        _cubeCounter.text = amount.ToString();
+    }
+    
     #endregion
 }

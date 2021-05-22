@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
 
     private void OnSpawnCubeAction()
     {
-        SpawnCubeAtOrigin();
+        SpawnCubeAtArbitraryPositionInsideLimitedArea();
     }
 
     private IEnumerator
@@ -72,16 +72,12 @@ public class GameManager : MonoBehaviour
         BulkSpawnCubes(_initialAmountOfCubes);
     }
 
-    private void SpawnCubeAtOrigin()
-    {
-        ISpawner spawner = new CubeSpawner(_pooler, PooledObjectType.Cube);
-        spawner.Spawn();
-    }
 
     private void SpawnCubeAtArbitraryPositionInsideLimitedArea()
     {
         ISpawner spawner = new CubeSpawner(_pooler, PooledObjectType.Cube);
         spawner.SpawnAtDefinition(GenerateNewRandomPositionInsideLimitedArea(), Quaternion.identity);
+        _uiManager.SetCubeCounter(_freeRoamsList.Count);
     }
 
     public Vector3 GenerateNewRandomPositionInsideLimitedArea()
@@ -129,22 +125,17 @@ public class GameManager : MonoBehaviour
         {
             SpawnCubeAtArbitraryPositionInsideLimitedArea();
         }
-        
-        Debug.Log("spawn");
-        Debug.Log(_freeRoamingCubes.Count);
-        Debug.Log(_freeRoamsList.Count);
     }
 
     private void BulkDespawnCubes(int amount)
     {
         if (_freeRoamingCubes.Count >= amount)
         {
-
             for (int i = 0; i < amount; i++)
             {
                 _freeRoamsList[i].GetComponent<IPooledObject>().Despawn();
             }
-            
+
             RemoveRoamersFromTree(amount);
             Debug.Log("despawn");
 
@@ -155,6 +146,8 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogWarning("You are trying to despawn more cubes than you spawned !");
         }
+
+        _uiManager.SetCubeCounter(_freeRoamsList.Count);
     }
 
     #endregion
