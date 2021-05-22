@@ -23,6 +23,15 @@ public class GameManager : MonoBehaviour
     [Header("Utility")] [SerializeField] private int _initialAmountOfCubes = 100;
 
     private KdTree<FreeRoam> _freeRoamingCubes = new KdTree<FreeRoam>();
+
+    public KdTree<FreeRoam> FreeRoamingCubes
+    {
+        get
+        {
+            return _freeRoamingCubes;
+        }
+    }
+
     private List<GameObject> _freeRoamsList = new List<GameObject>();
     private WaitForSeconds _waitFor = new WaitForSeconds(0.1f);
 
@@ -137,10 +146,8 @@ public class GameManager : MonoBehaviour
             }
 
             RemoveRoamersFromTree(amount);
-            Debug.Log("despawn");
 
-            Debug.Log(_freeRoamingCubes.Count);
-            Debug.Log(_freeRoamsList.Count);
+            
         }
         else
         {

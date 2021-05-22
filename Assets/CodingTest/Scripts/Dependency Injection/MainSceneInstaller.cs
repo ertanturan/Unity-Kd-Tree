@@ -1,4 +1,5 @@
 ﻿using CodingTest.Scripts.UI.Components.Buttons;
+using CodingTest.Scripts.Utility;
 using CustomTools.ObjectPooling.Scripts.ObjectPool;
 using UnityEngine;
 using Zenject;
@@ -17,6 +18,7 @@ namespace CodingTest.Scripts.Dependency_Injection
             Container.Bind<GameManager>().FromComponentOn(_gameManager).AsSingle().NonLazy();
             Container.Bind<UserInterfaceManager>().FromComponentOn(_userInterface).AsSingle().NonLazy();
 
+            Container.Bind<DrawLineBetweenTwoPositions>().FromComponentSibling();
         }
         
     }
