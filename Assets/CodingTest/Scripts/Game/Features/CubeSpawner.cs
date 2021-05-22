@@ -13,13 +13,13 @@ public class CubeSpawner : ISpawner
     {
         TypeToSpawn = typeToSpawn;
         _pooler = pooler;
-
     }
     
     public PooledObjectType TypeToSpawn { get; set; }
-    public void Spawn(Vector3 position, Quaternion rotation)
+    public void SpawnAtDefinition(Vector3 position, Quaternion rotation)
     {
         _pooler.SpawnFromPool(TypeToSpawn, position, rotation);
+        
     }
 
     public void Spawn()

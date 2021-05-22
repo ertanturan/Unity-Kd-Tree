@@ -936,6 +936,7 @@ MonoBehaviour:
     X: 200
     Y: 200
     Z: 200
+  _initialAmountOfCubes: 100
 --- !u!1 &1981584952
 GameObject:
   m_ObjectHideFlags: 0
@@ -983,4 +984,4 @@ MonoBehaviour:
   - Tag: 0
     Prefab: {fileID: 2610897924244773427, guid: c785ba8acd2bbd0459441b60958bf6ba,
       type: 3}
-    Size: 10
+    Size: 100

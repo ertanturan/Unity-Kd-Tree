@@ -5,6 +5,6 @@ using UnityEngine;
 public interface ISpawner
 {
     PooledObjectType TypeToSpawn { get; set; }
-    void Spawn(Vector3 position, Quaternion rotation);
+    void SpawnAtDefinition(Vector3 position, Quaternion rotation);
     void Spawn();
 }

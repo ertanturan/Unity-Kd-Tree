@@ -15,7 +15,7 @@ namespace CodingTest.Scripts.Game
         {
             if (IsOnTargetPosition())
             {
-                _dynamicTargetPos = GenerateNewRandomPositionInsideLimitedArea();
+                _dynamicTargetPos = GameManager.GenerateNewRandomPositionInsideLimitedArea();
             }
             else
             {
@@ -32,16 +32,7 @@ namespace CodingTest.Scripts.Game
         {
             return (transform.position - _dynamicTargetPos).magnitude < 0.1;
         }
-
-        private Vector3 GenerateNewRandomPositionInsideLimitedArea()
-        {
-            return new Vector3(
-                Random.Range(0, GameManager.AreaLimit.X),
-                Random.Range(0, GameManager.AreaLimit.Y),
-                Random.Range(0, GameManager.AreaLimit.Z)
-            );
-        }
-
+   
         public PooledObjectType PoolType { get; set; }
         public ObjectPooler Pooler { get; private set; }
 
@@ -53,6 +44,10 @@ namespace CodingTest.Scripts.Game
 
         public void OnObjectSpawn()
         {
+            if (_dynamicTargetPos==Vector3.zero)
+            {
+                _dynamicTargetPos = transform.position;
+            }
         }
 
         public void OnObjectDespawn()
