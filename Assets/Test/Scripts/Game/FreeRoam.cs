@@ -10,7 +10,7 @@ public class FreeRoam : MonoBehaviour
 
     void Update()
     {
-        if (!IsOnTargetPosition())
+        if (IsOnTargetPosition())
         {
             _dynamicTargetPos = GenerateNewRandomPositionInsideLimitedArea();
         }
@@ -22,7 +22,7 @@ public class FreeRoam : MonoBehaviour
 
     private void MoveToTargetPos()
     {
-        transform.position = Vector3.Lerp(transform.position, _dynamicTargetPos, 1);
+        transform.position = Vector3.Lerp(transform.position, _dynamicTargetPos, 0.01f);
     }
 
     private bool IsOnTargetPosition()
