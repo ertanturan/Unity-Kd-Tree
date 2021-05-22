@@ -6,7 +6,7 @@ public interface IPooledObject
 {
     PooledObjectType PoolType { get; set; }
 
-     ObjectPooler Pooler { get; }
+     ObjectPooler Pooler { get;  }
      
      [Inject]
     void Construct(ObjectPooler pooler);

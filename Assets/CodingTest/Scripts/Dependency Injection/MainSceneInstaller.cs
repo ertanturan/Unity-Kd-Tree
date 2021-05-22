@@ -10,5 +10,6 @@ public class MainSceneInstaller : MonoInstaller
     public override void InstallBindings()
     {
         Container.Bind<ObjectPooler>().FromComponentInChildren().AsSingle().NonLazy();
+        
     }
 }
