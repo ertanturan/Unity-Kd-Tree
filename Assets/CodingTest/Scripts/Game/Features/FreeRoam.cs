@@ -48,6 +48,9 @@ namespace CodingTest.Scripts.Game
             {
                 _dynamicTargetPos = transform.position;
             }
+            
+            GameManager.AddRoamerToTree(this);
+            
         }
 
         public void OnObjectDespawn()
@@ -56,6 +59,7 @@ namespace CodingTest.Scripts.Game
 
         public void Despawn()
         {
+            Debug.Log(Pooler.GetInstanceID());
             Pooler.Despawn(gameObject);
         }
     }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using CodingTest.Scripts.Game;
 using CodingTest.Scripts.Structs;
 using CodingTest.Scripts.UI.Components.Buttons;
 using CustomTools.ObjectPooling.Scripts.ObjectPool;
@@ -18,23 +20,30 @@ public class GameManager : MonoBehaviour
     [Inject] private UserInterfaceManager _uiManager;
     [Inject] private ObjectPooler _pooler;
 
-    [Header("Utility")] 
-    [SerializeField] private int _initialAmountOfCubes = 100;
+    [Header("Utility")] [SerializeField] private int _initialAmountOfCubes = 100;
 
+    private KdTree<FreeRoam> _freeRoamingCubes = new KdTree<FreeRoam>();
+    private List<GameObject> _freeRoamsList = new List<GameObject>();
     private WaitForSeconds _waitFor = new WaitForSeconds(0.1f);
-    
+
     #endregion
 
 
     #region Built-in Methods
+
     private void Awake()
     {
         _uiManager.SpawnCubeButtonClicked += OnSpawnCubeAction;
+        _uiManager.BulkSpawnButtonClicked += OnBulkSpawnCubeAction;
+        _uiManager.BulkDespawnButtonClicked += OnBulkDespawnCubeAction;
     }
-    
+
+
     private void OnDestroy()
     {
         _uiManager.SpawnCubeButtonClicked -= OnSpawnCubeAction;
+        _uiManager.BulkSpawnButtonClicked -= OnBulkSpawnCubeAction;
+        _uiManager.BulkDespawnButtonClicked -= OnBulkDespawnCubeAction;
     }
 
 
@@ -48,22 +57,19 @@ public class GameManager : MonoBehaviour
 
     #region Custom Methods
 
-    
-
     private void OnSpawnCubeAction()
     {
-      SpawnCubeAtOrigin();
+        SpawnCubeAtOrigin();
     }
 
-    private IEnumerator SpawnInitialCubesWithDelay() // I've put the delay because, the object pooler's cycle was also in Start.
-    //so they were colliding.
+    private IEnumerator
+        SpawnInitialCubesWithDelay() // I've put the delay because, the object pooler's cycle was also in Start.
+        //so they were colliding.
     {
         yield return _waitFor;
-        
-        for (int i = 0; i < _initialAmountOfCubes; i++)
-        {
-            SpawnCubeAtArbitraryPositionInsideLimitedArea();
-        }
+
+
+        BulkSpawnCubes(_initialAmountOfCubes);
     }
 
     private void SpawnCubeAtOrigin()
@@ -75,9 +81,9 @@ public class GameManager : MonoBehaviour
     private void SpawnCubeAtArbitraryPositionInsideLimitedArea()
     {
         ISpawner spawner = new CubeSpawner(_pooler, PooledObjectType.Cube);
-        spawner.SpawnAtDefinition(GenerateNewRandomPositionInsideLimitedArea(),Quaternion.identity);
+        spawner.SpawnAtDefinition(GenerateNewRandomPositionInsideLimitedArea(), Quaternion.identity);
     }
-    
+
     public Vector3 GenerateNewRandomPositionInsideLimitedArea()
     {
         return new Vector3(
@@ -87,7 +93,69 @@ public class GameManager : MonoBehaviour
         );
     }
 
-    #endregion
 
-  
+    public void AddRoamerToTree(FreeRoam roamer)
+    {
+        if (!_freeRoamingCubes.Contains(roamer))
+        {
+            _freeRoamingCubes.Add(roamer);
+            _freeRoamsList.Add(roamer.gameObject);
+        }
+    }
+
+    public void RemoveRoamersFromTree(int amountToRemove)
+    {
+        for (int i = 0; i < amountToRemove; i++)
+        {
+            _freeRoamingCubes.RemoveAt(0);
+            _freeRoamsList.RemoveAt(0);
+        }
+    }
+
+
+    private void OnBulkSpawnCubeAction(int value)
+    {
+        BulkSpawnCubes(value);
+    }
+
+    private void OnBulkDespawnCubeAction(int value)
+    {
+        BulkDespawnCubes(value);
+    }
+
+    private void BulkSpawnCubes(int amount)
+    {
+        for (int i = 0; i < amount; i++)
+        {
+            SpawnCubeAtArbitraryPositionInsideLimitedArea();
+        }
+        
+        Debug.Log("spawn");
+        Debug.Log(_freeRoamingCubes.Count);
+        Debug.Log(_freeRoamsList.Count);
+    }
+
+    private void BulkDespawnCubes(int amount)
+    {
+        if (_freeRoamingCubes.Count >= amount)
+        {
+
+            for (int i = 0; i < amount; i++)
+            {
+                _freeRoamsList[i].GetComponent<IPooledObject>().Despawn();
+            }
+            
+            RemoveRoamersFromTree(amount);
+            Debug.Log("despawn");
+
+            Debug.Log(_freeRoamingCubes.Count);
+            Debug.Log(_freeRoamsList.Count);
+        }
+        else
+        {
+            Debug.LogWarning("You are trying to despawn more cubes than you spawned !");
+        }
+    }
+
+    #endregion
 }

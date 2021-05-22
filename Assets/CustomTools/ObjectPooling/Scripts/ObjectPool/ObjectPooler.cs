@@ -93,8 +93,7 @@ namespace CustomTools.ObjectPooling.Scripts.ObjectPool
         {
             PooledObjectType pooledObjectType = obj.GetComponent<IPooledObject>().PoolType;
 
-            if (_poolDictionary.ContainsKey(pooledObjectType) &&  // check if there's a queued objects by that tag.
-                _poolDictionary[pooledObjectType].Contains(gameObject)) // check if `obj` is already despawned
+            if (pooledObjectType != null && _poolDictionary.ContainsKey(pooledObjectType))
             {
 
 
@@ -112,7 +111,7 @@ namespace CustomTools.ObjectPooling.Scripts.ObjectPool
             }
             else
             {
-                Debug.LogError("Trying to despawn object which is not pooled or object is already despawned !");
+                Debug.LogError("Trying to despawn object which is not pooled !");
             }
 
         }

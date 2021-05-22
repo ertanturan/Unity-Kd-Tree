@@ -25,7 +25,9 @@ public class CubeSpawner : ISpawner
     public void Spawn()
     {
         _pooler.SpawnFromPool(TypeToSpawn, Vector3.zero, Quaternion.identity);
-
+        
     }
+    
+    
 
 }
