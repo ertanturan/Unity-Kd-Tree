@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 
-
+namespace CodingTest.Scripts.Structs
+{
     [System.Serializable]
-    public class LimitedArea
+    public struct LimitedArea 
     {   
         public float X;
         public float Y;
@@ -50,4 +51,5 @@
         }
 
     }
+}
 

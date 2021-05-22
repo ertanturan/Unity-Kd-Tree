@@ -9,7 +9,7 @@ public class PooledObject : MonoBehaviour, IPooledObject
     public ObjectPooler Pooler { get; private set; }
 
     [Inject]
-    public virtual void Construct(ObjectPooler pooler)
+    public virtual void ConstructPool(ObjectPooler pooler)
     {
         Debug.Log("construct");
         

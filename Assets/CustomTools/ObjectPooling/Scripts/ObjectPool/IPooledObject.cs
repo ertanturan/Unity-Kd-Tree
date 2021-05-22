@@ -9,7 +9,7 @@ public interface IPooledObject
      ObjectPooler Pooler { get;  }
      
      [Inject]
-    void Construct(ObjectPooler pooler);
+    void ConstructPool(ObjectPooler pooler);
     void OnObjectSpawn();
     void OnObjectDespawn();
     void Despawn();

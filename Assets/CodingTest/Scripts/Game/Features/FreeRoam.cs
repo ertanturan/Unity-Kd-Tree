@@ -1,15 +1,15 @@
-﻿using CustomTools.ObjectPooling.Scripts.ObjectPool;
-
+﻿using CodingTest.Scripts.Structs;
+using CustomTools.ObjectPooling.Scripts.ObjectPool;
 using UnityEngine;
 using Zenject;
 
-namespace Test.Scripts.Game
+namespace CodingTest.Scripts.Game
 {
-    public class FreeRoam : MonoBehaviour,IPooledObject
+    public class FreeRoam : MonoBehaviour, IPooledObject
     {
         private Vector3 _dynamicTargetPos;
 
-        [SerializeField] private LimitedArea _limitedArea;
+        [Inject] public GameManager GameManager { get; private set; }
 
         void Update()
         {
@@ -36,17 +36,17 @@ namespace Test.Scripts.Game
         private Vector3 GenerateNewRandomPositionInsideLimitedArea()
         {
             return new Vector3(
-                Random.Range(0, _limitedArea.X),
-                Random.Range(0, _limitedArea.Y),
-                Random.Range(0, _limitedArea.Z)
+                Random.Range(0, GameManager.AreaLimit.X),
+                Random.Range(0, GameManager.AreaLimit.Y),
+                Random.Range(0, GameManager.AreaLimit.Z)
             );
         }
 
         public PooledObjectType PoolType { get; set; }
         public ObjectPooler Pooler { get; private set; }
-    
+
         [Inject]
-        public void Construct(ObjectPooler pooler)
+        public void ConstructPool(ObjectPooler pooler)
         {
             Pooler = pooler;
         }

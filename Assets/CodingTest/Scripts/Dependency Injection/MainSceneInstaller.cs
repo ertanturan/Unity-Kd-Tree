@@ -1,15 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using CustomTools.ObjectPooling.Scripts.ObjectPool;
+﻿using CustomTools.ObjectPooling.Scripts.ObjectPool;
 using UnityEngine;
 using Zenject;
 
-public class MainSceneInstaller : MonoInstaller
+namespace CodingTest.Scripts.Dependency_Injection
 {
-
-    public override void InstallBindings()
+    public class MainSceneInstaller : MonoInstaller
     {
-        Container.Bind<ObjectPooler>().FromComponentInChildren().AsSingle().NonLazy();
+
+        [SerializeField] private GameObject _gameManager;
+        [SerializeField] private GameObject _objectPool;
+        public override void InstallBindings()
+        {
+            Container.Bind<ObjectPooler>().FromComponentOn(_objectPool).AsSingle().NonLazy();
+            Container.Bind<GameManager>().FromComponentOn(_gameManager).AsSingle().NonLazy();
+        }
         
     }
 }
