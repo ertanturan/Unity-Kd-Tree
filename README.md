@@ -1,4 +1,4 @@
-# Unity-Kd-Tree Test
+# Unity-Kd-Tree Example
 
 
 1. I have used my own object pooler which can be found [here](https://github.com/ertanturan/Unity-Object-Pooling) 
